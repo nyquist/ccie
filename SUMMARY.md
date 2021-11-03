@@ -6,3 +6,4 @@
 
 * [ Ethernet Switching](layer-2-technologies/ethernet-switching/README.md)
   * [802.1d – STP](layer-2-technologies/ethernet-switching/802.1d-stp.md)
+  * [802.1w – RSTP](layer-2-technologies/ethernet-switching/802.1w-rstp.md)
