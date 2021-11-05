@@ -84,3 +84,12 @@
 
 * [MPLS 101](mpls/mpls-101.md)
 * [MPLS L3 VPN](mpls/mpls-l3-vpn.md)
+
+## Multicast
+
+* [Multicast 101](multicast/multicast-101.md)
+* [PIM 101](multicast/pim-101.md)
+* [IGMP 101](multicast/igmp-101.md)
+* [Inter Domain Multicast](multicast/inter-domain-multicast.md)
+* [IPv6 Multicast](multicast/ipv6-multicast.md)
+* [Multicast features on switches](multicast/multicast-features-on-switches.md)
