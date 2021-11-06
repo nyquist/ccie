@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Welcome!](README.md)
+* [Table of Contents](README.md)
 
 ## Layer 2 Technologies
 
