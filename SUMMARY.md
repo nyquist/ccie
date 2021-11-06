@@ -111,3 +111,30 @@
   * [DHCP Snooping and DAI](security/switch-security/dhcp-snooping-and-dai.md)
   * [802.1x](security/switch-security/802.1x.md)
   * [Switch ACLs](security/switch-security/switch-acls.md)
+
+## Network Services
+
+* [NTP 101](network-services/ntp-101.md)
+* [HTTP 101](network-services/http-101.md)
+* [File Transfer 101 – TFTP & FTP](network-services/file-transfer-101-tftp-and-ftp.md)
+* [WCCP 101](network-services/wccp-101.md)
+
+## QoS
+
+* [QoS 101](qos/qos-101.md)
+* [Classification and Marking](qos/classification-and-marking.md)
+* [Congestion Management](qos/congestion-management/README.md)
+  * [Legacy Congestion Management](qos/congestion-management/legacy-congestion-management.md)
+  * [SPD – Selective Packet Discard](qos/congestion-management/spd-selective-packet-discard.md)
+  * [CBWFQ](qos/congestion-management/cbwfq.md)
+  * [IP RTP Priority](qos/congestion-management/ip-rtp-priority.md)
+* [Congestion Avoidance – WRED](qos/congestion-avoidance-wred.md)
+* [Policing and Shaping](qos/policing-and-shaping/README.md)
+  * [CAR 101](qos/policing-and-shaping/car-101.md)
+* [Compression and LFI](qos/compression-and-lfi/README.md)
+  * [Header and Payload Compression](qos/compression-and-lfi/header-and-payload-compression.md)
+  * [LFI for MultiLink PPP](qos/compression-and-lfi/lfi-for-multilink-ppp.md)
+* [Frame Relay QoS](qos/frame-relay-qos/README.md)
+  * [Per VC Frame Relay QoS](qos/frame-relay-qos/per-vc-frame-relay-qos.md)
+* [RSVP 101](qos/rsvp-101.md)
+* [Switching QoS](qos/switching-qos.md)
