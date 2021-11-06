@@ -138,3 +138,15 @@
   * [Per VC Frame Relay QoS](qos/frame-relay-qos/per-vc-frame-relay-qos.md)
 * [RSVP 101](qos/rsvp-101.md)
 * [Switching QoS](qos/switching-qos.md)
+
+## Network Optimization
+
+* [NetFlow 101 – TNF – Traditional NetFlow](network-optimization/netflow-101-tnf-traditional-netflow.md)
+* [NetFlow 102 – FNF – Flexible NetFlow](network-optimization/netflow-102-fnf-flexible-netflow.md)
+* [IP SLA 101](network-optimization/ip-sla-101.md)
+* [IP Accounting 101](network-optimization/ip-accounting-101.md)
+* [Logging 101](network-optimization/logging-101.md)
+* [SNMP and RMON 101](network-optimization/snmp-and-rmon-101.md)
+* [Cisco CLI Tips and Tricks](network-optimization/cisco-cli-tips-and-tricks.md)
+* [AutoInstall](network-optimization/autoinstall.md)
+* [Enhanced Object Tracking](network-optimization/enhanced-object-tracking.md)
