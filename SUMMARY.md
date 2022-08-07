@@ -152,3 +152,7 @@
 * [Cisco CLI Tips and Tricks](network-optimization/cisco-cli-tips-and-tricks.md)
 * [AutoInstall](network-optimization/autoinstall.md)
 * [Enhanced Object Tracking](network-optimization/enhanced-object-tracking.md)
+
+## Network Architecture
+
+* [Hierarchical Network Architecture](network-architecture/hierarchical-network-architecture.md)

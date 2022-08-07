@@ -36,7 +36,7 @@ R(config-if)#encapsulation frame-relay ?
  
 ```
 
-Even if it is not very clear, we should understand that hitting enter will set the encapsulation to _cisco_, while the other options are _ietf _and [_MFR_](https://nyquist.eu/multilink-frame-relay/).
+Even if it is not very clear, we should understand that hitting enter will set the encapsulation to _cisco_, while the other options are _ietf_ and [_MFR_](https://nyquist.eu/multilink-frame-relay/).
 
 To see the encapsulation type used on an interface use:
 

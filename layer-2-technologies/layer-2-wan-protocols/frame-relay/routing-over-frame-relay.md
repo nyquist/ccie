@@ -28,7 +28,7 @@ The following considerations regard a Hub-and-Spoke topology with the hub using 
 
 1. RIPv1 uses broadcasts and RIPv2 uses multicast to send routing updates, so first of all, the DLCIs have to be able to transport broadcasts.
 2. Since updates are sent as broadcast or multicast, the updates sent by one spoke will reach the hub but will not reach the other spokes. (Broadcast/Multicast traffic si not routed). Solutions:
-   * The hub should forward the updates to all spokes, but the Split Horizons rule prevents this. It should be disabled using **no ip split-horizon **at the (sub)interface level. The next-hop address for all routes will point to the Hub’s IP address
+   * The hub should forward the updates to all spokes, but the Split Horizons rule prevents this. It should be disabled using **no ip split-horizon** at the (sub)interface level. The next-hop address for all routes will point to the Hub’s IP address
    * If Split Horizon cannot be disabled, then we should send the updates as unicast from one spoke to another. This requires that each spoke declares its neighbors with **neighbor NEIGH-IP** command inside the routing process. The next-hop for spoke routes will point to each spoke’s IP address so we will also need mappings for the neighbors address on the (sub)interface.
    * You could also create a tunnel interface between the spokes but this will turn the topology into a Pseudo-Full-Mesh
 3. Cisco routers send RIP messages with TTL=2, so they will not be affected by a TTL decrement on the Hub.
