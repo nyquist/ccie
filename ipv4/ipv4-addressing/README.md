@@ -18,4 +18,4 @@
 
 [BFD - Bidirectional Forwarding Detection](bfd-bidirectional-forwarding-detection.md)
 
-[NSF - Non Stop Forwarding](nsf-non-stop-forwarding.md)
+[NSF - Non Stop Forwarding](../ipv4-routing/how-the-routing-table-is-built/nsf-non-stop-forwarding.md)

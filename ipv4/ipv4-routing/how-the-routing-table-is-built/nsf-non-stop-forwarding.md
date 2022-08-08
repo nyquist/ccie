@@ -2,12 +2,11 @@
 
 ## What is NSF
 
-NSF is a feature that allows routers to keep on forwarding traffic (non stop forwarding) even in the event of a restart.\
-This is done by separating the control and the data plane, having one process involved in building the routing table and another process in forwarding the packets.\
-This feature takes advantage of CEF which updates the line cards with the information from FIB.\
+NSF is a feature that allows routers to keep on forwarding traffic (non stop forwarding) even in the event of a restart. This is done by separating the control and the data plane, having one process involved in building the routing table and another process in forwarding the packets.This feature takes advantage of CEF which updates the line cards with the information from FIB.
+
 In order for NSF to work, routers must be NSF-capable or NSF-aware. A NSF-capable router is a router that can perform restarts without disrupting packet forwarding, while a NSF-aware router understands NSF-specific signaling from NSF-capable routers.\
 NSF requires these additional features because, while performing restart, a router will not be able to send Hellos to its peers. This normally should result in the neighbor relationship being dropped, routes being lost, packets being dropped.\
-Routers exchange NSF capabilities information with each other and when a NSF-capable router performs restart, its NSF-aware peers will change the default behavior in order to prevent breaking the neighbor relationship.\
+Routers exchange NSF capabilities information with each other and when a NSF-capable router performs a restart, its NSF-aware peers will change the default behavior in order to prevent breaking the neighbor relationship.\
 NSF-aware routers are also called NSF-helpers because they will help a router performing a NSF restart to re-sync with the network as soon as possible.
 
 ## NSF Support

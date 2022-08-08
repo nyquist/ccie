@@ -10,7 +10,6 @@ In order to build the mac address-table the switch uses the L2 MAC Source Addres
 
 When looking up a Destination MAC address in the table there are 2 options
 
-* The
 * an entry with the MAC address, port and VLAN exists in the table: In this case the frame is forwarded on the port.
 * no entry is found: In this case the frame is forwarded to all ports in the same VLAN as the incoming port. This operation is also known as "Unknown Unicast Flooding"
 

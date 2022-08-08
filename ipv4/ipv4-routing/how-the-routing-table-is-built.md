@@ -59,11 +59,11 @@ If using classful routing, when a packet arrives, the destination address is use
 
 * Is the major network of the destination address in the routing table?
   * NO: Is there a default route?
-* YES: Use the default route
-* NO: Drop the packet
-* YES: Is there a subnet of the major network, where the destination address fits?
-  * NO: Drop the packet
-  * YES: Route the packet
+    * YES: Use the default route
+    * NO: Drop the packet
+  * YES: Is there a subnet of the major network, where the destination address fits?
+    * NO: Drop the packet
+    * YES: Route the packet
 
 To enable classful routing, use:
 
