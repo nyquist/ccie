@@ -7,6 +7,7 @@ coverY: 0
 ### Layer 2 Technologies
 
 * [Ethernet Switching](layer-2-technologies/ethernet-switching/)
+  * [L2 Switching Operations](layer-2-technologies/ethernet-switching/l2-switch-operations.md)
   * [802.1d – STP](layer-2-technologies/ethernet-switching/802.1d-stp.md)
   * [802.1w – RSTP](layer-2-technologies/ethernet-switching/802.1w-rstp.md)
   * [802.1s – MSTP](layer-2-technologies/ethernet-switching/802.1s-mstp.md)
