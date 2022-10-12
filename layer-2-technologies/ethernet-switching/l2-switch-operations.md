@@ -35,6 +35,16 @@ Sw(config)# mac address-table aging-time SEC
 
 ## TCAM - Ternary Content Addressable Memory
 
-Ternary CAM means this memory supports a third state as well, besides 0 and 1. The third state is X="don't care".
+Ternary CAM means this memory supports a third state as well, besides 0 and 1. The third state is X="don't care". This is implemented through a VMR format (Value, Mask, Result)&#x20;
 
-The TCAM is used to hold security ACLs and QoS ACLs and frames would be tested against the TCAM entries to see if the frame should be sent or with what piority.&#x20;
+The TCAM is used to hold security ACLs and QoS ACLs and frames would be tested against the TCAM entries to see if the frame should be sent or with what piority. TCAM is also used for L3 forwarding.&#x20;
+
+The allocation of memory for TCAM tables is limited and statically allocated during the boot process but it can be slightly tweaked to use one of the possible SDM (Switching Database Manager) Templates.
+
+```
+Sw# show sdm prefer
+...
+Sw(config)# sdm prefer {vlan|advanced}
+```
+
+A reload will be required for the SDM templates to take effect.

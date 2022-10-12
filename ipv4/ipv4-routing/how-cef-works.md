@@ -45,17 +45,68 @@ Optimized switching is an improved version of fast switching that applies to IPv
 
 CEF works by building 2 structures:
 
-* CEF table, aka **FIB** (Forwarding Information Base) – implements the routing table in an easy-to-search [mtree](https://en.wikipedia.org/wiki/M-tree) data structure. The leaves of the tree store pointers into the adjacency table. It is stored in TCAM tables.
-* **Adjacency table** – holds information regarding the L2 fields that needs to be overwritten over the incoming packet’s header and it is populated automatically from the ARP table, Frame Relay map table, and so on.
-
-You can check the 2 tables with the commands:
-
-```
-R# show ip cef
-R# show adjacency
-```
+* **CEF table,** aka **FIB** (Forwarding Information Base) – implements the routing table in an easy-to-search [mtree](https://en.wikipedia.org/wiki/M-tree) data structure. The leaves of the tree store pointers into the adjacency table. It is stored in TCAM tables. When a topology change occours, the routing table is updated and the changes are reflected in the FIB as well.
+* **Adjacency table** – holds information regarding the L2 fields that needs to be overwritten over the incoming packet’s header and it is populated automatically from the ARP table or other L2 protcols.
 
 Since entries in the CEF table and the adjacency table are all updated when the routing tabel or the L3 to L2 information tables (ARP, Framer Relay maps) change, the CEF information is always up to date and no aging is needed (as with Fast switching).
+
+### CEF table (FIB)
+
+The main difference between a route table and FIB is that when FIB entries are updated, their next-hop doesn't have any additional dependencies and already resolves to a next hop that is attached. \
+If route for prefix A has the next-hop B and route to B has the next-hop C (direclty connected) then the FIB entry for A will show the next-hop C.
+
+```
+R# sh ip cef
+Prefix               Next Hop             Interface
+0.0.0.0/0            no route
+0.0.0.0/8            drop
+0.0.0.0/32           receive              
+10.10.10.0/30        attached             Ethernet0/0
+10.10.10.0/32        receive              Ethernet0/0
+10.10.10.1/32        receive              Ethernet0/0
+10.10.10.2/32        attached             Ethernet0/0
+10.10.10.3/32        receive              Ethernet0/0
+127.0.0.0/8          drop
+192.168.100.0/24     attached             Ethernet0/1
+192.168.100.0/32     receive              Ethernet0/1
+192.168.100.1/32     receive              Ethernet0/1
+192.168.100.255/32   receive              Ethernet0/1
+192.168.110.0/24     10.10.10.2           Ethernet0/0
+224.0.0.0/4          drop
+224.0.0.0/24         receive              
+240.0.0.0/4          drop
+255.255.255.255/32   receive              
+
+```
+
+* no route - there's no route to this destination. Should only appear for default route
+* drop - traffic for these destinations should be dropped. This may show up for "special" prefixes like 0.0.0.0/8, 127.0.0.0/8, 224.0.0.0/4, 240.0.0/4
+* receive - traffic for these destinations is considered local by the host and will not be forwarded, but it should be further processed by the router. For example traffic destined to local IP addresses and to their respective broadcast addresses
+* attached - traffic for these destinations is directly connected so traffic should be forwarded
+* IP address - traffic for these destinations should be forwareded to the indicated next-hop IP address
+
+CEF can be disabled per interface or globaly
+
+```
+R# show ip interface INTF | i CEF
+  IP CEF switching is enabled
+R(config)# [no] ip cef
+R(config-if)# [no] ip route-cache c
+```
+
+When looking at the CEF table you can filter the output by outgoing interface or destination prefixes (with longer-prefixes match). Another handy tool when troubleshooting is the cef exact-route command that allows you to see how a packet will be forwarded:
+
+```
+R# show ip cef INTF
+R# show ip cef PREFIX MASK [longer-prefixes]
+R# show ip cef exact-route SRC-IP DST-IP
+```
+
+### Adjacency table
+
+```
+R# show adjacency
+```
 
 Entries in the adjacency table usually have information about outgoing interfaces and information to rebuild the packet, but there are some exceptions, that will make the packets to be process switched:
 
@@ -69,6 +120,10 @@ Entries in the adjacency table usually have information about outgoing interface
 * Discard: drop the packet
 * Null: packets for Null0 interface. Drop them
 * Glean: an ARP request needs to be sent in order to “glean” L2 information
+
+{% hint style="info" %}
+[https://www.cisco.com/c/en/us/support/docs/ip/express-forwarding-cef/17812-cef-incomp.html#types](https://www.cisco.com/c/en/us/support/docs/ip/express-forwarding-cef/17812-cef-incomp.html#types)
+{% endhint %}
 
 ### Load sharing
 
