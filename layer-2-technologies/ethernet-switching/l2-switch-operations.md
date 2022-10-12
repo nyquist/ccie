@@ -15,6 +15,24 @@ When looking up a Destination MAC address in the table there are 2 options
 
 The mac address-table is also known as CAM (Content Addressable Memory). A CAM works differently than a RAM (Random Access Memory). With RAM you can ask for a the content at a specific address, while with CAM you can ask for the address of a specific content.
 
+To verify the contents of the mac address-table, you can use:
+
+```bash
+Sw# show mac address-table [interface INTF]
+```
+
+The mac address-table has an aging time. Each entry is kept in the table for until the aging time expires. By default this is set to 300 seconds (5 minutes) but it can be changed in config mode:
+
+```bash
+Sw# show mac address-table aging-time
+Global Aging Time:  300
+Vlan    Aging Time
+----    ----------
+Sw# conf t
+Sw(config)# mac address-table aging-time SEC
+# Use 0 to disable aging
+```
+
 ## TCAM - Ternary Content Addressable Memory
 
 Ternary CAM means this memory supports a third state as well, besides 0 and 1. The third state is X="don't care".
