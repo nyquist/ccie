@@ -6,9 +6,10 @@
 
 * [Ethernet Switching](layer-2-technologies/ethernet-switching/README.md)
   * [L2 Switch Operations](layer-2-technologies/ethernet-switching/l2-switch-operations.md)
-  * [802.1d – STP](layer-2-technologies/ethernet-switching/802.1d-stp.md)
-  * [802.1w – RSTP](layer-2-technologies/ethernet-switching/802.1w-rstp.md)
-  * [802.1s – MSTP](layer-2-technologies/ethernet-switching/802.1s-mstp.md)
+  * [Spanning Tree](layer-2-technologies/ethernet-switching/spanning-tree/README.md)
+    * [802.1d – STP](layer-2-technologies/ethernet-switching/spanning-tree/802.1d-stp.md)
+    * [802.1w – RSTP](layer-2-technologies/ethernet-switching/spanning-tree/802.1w-rstp.md)
+    * [802.1s – MSTP](layer-2-technologies/ethernet-switching/spanning-tree/802.1s-mstp.md)
   * [VTP 101](layer-2-technologies/ethernet-switching/vtp-101.md)
   * [Private VLANs](layer-2-technologies/ethernet-switching/private-vlans.md)
   * [VLANs](layer-2-technologies/ethernet-switching/vlans.md)

@@ -45,7 +45,7 @@ Using the complexity formula to figure out when a collapsed core would be more b
 
 * **Traditional Layer 2 Access** should be used with a Distribution Layer that makes use of a [FHRP](../ipv4/ipv4-addressing/fhrp-101.md) protocol to provide gateway redundancy for a VLAN.
   * Looped Design
-    * In the looped design [STP ](../layer-2-technologies/ethernet-switching/802.1d-stp.md)must be used to break the loops. This will block traffic on some of the links thus making resource utilization sub-optimal
+    * In the looped design [STP ](../layer-2-technologies/ethernet-switching/spanning-tree/802.1d-stp.md)must be used to break the loops. This will block traffic on some of the links thus making resource utilization sub-optimal
   * Loop Free Design
     * Is less common because it requires that each access switch supports a single VLAN which limits the flexibility of the network
 * **Layer 3 Access**
