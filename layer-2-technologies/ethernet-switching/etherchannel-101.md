@@ -98,3 +98,28 @@ Sw# show ethernchannel [PO-ID] {summary|detail|...}
 Sw# show pagp ...
 Sw# show lacp ...
 ```
+
+### EtherChannel Guard
+
+This feature can detect misconfigurations between connected devices. Normally it is configured by default and it will put the physical interfaces in _err-disabled_ state.
+
+To check if Etherchannel Guard is enabled, use:
+
+```
+Sw# show spanning-tree summary
+Switch is in pvst mode
+Root bridge for: VLAN0001
+Extended system ID           is enabled
+Portfast Default             is disabled
+PortFast BPDU Guard Default  is disabled
+Portfast BPDU Filter Default is disabled
+Loopguard Default            is disabled
+EtherChannel misconfig guard is enabled
+...
+```
+
+To enable the feature, use the global config command:
+
+```
+Sw(config)# spanning-tree etherchannel guard misconfig
+```
