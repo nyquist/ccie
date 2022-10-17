@@ -175,13 +175,14 @@ See [Going Active](more-eigrp-features.md#going-active-sending-queries) for deta
 
 ## Packets
 
-EGIRP uses IP protocol 88 (RTP=Reliable Transport Protocol). EIGRP uses both unicast and mulitcast packets. Except for HELLO and ACK packets, the other packets require ACK from the neighbors. A router would retry 16 times to send a packet before neighbor relationship is reset. All packets are sourced from the primary IP address of the interface.\
-**HELLO** packets are sent every HELLO-INTERVAL as multicasts to 224.0.0.10 or as unicasts to each static neighbor. They contain the K values used by the router as well as the HOLD-TIME – how much time to wait for a HELLO, before resetting adjacency. EIGRP packets are sourced from the primary address of each interface.\
-**UPDATE** packets are sent as unicast when neighbors are discovered initially and as multicasts whne updates are genertated by network changes. For each route, a packet contains the prefix, prefix length, hop count, and components of the advertised metric (Bandwidth, Load, Delay, Reliability, MTU). These packets are sent only when changes occur and only to the routers that need the update. EIGRP doesn’t use periodic updates. Update packets need to be acknowledged.\
-**QUERY** packets are used when “going active” – see [Going Active](more-eigrp-features.md#going-active-sending-queries). QUERY packets are sent as multicast and need to be ACKed.\
-**REPLY** packets are used to reply to QUERY packets. They are sent as unicasts and need to be ACKed.\
-**ACK** packets are sent as an acknowledgement to Query and Reply messages. ACK are always unicasts, and EIGRP expectes one ACK from each neighbor.\
-**GOODBYE** packets are sent when the EIGRP process is shut down or restarted to inform the neighbors.
+EGIRP uses IP protocol 88 (RTP=Reliable Transport Protocol). EIGRP uses both unicast and mulitcast packets. Except for HELLO and ACK packets, the other packets require ACK from the neighbors. A router would retry 16 times to send a packet before neighbor relationship is reset. All packets are sourced from the primary IP address of the interface.
+
+* **HELLO** packets are sent every HELLO-INTERVAL as multicasts to 224.0.0.10 or as unicasts to each static neighbor. They contain the K values used by the router as well as the HOLD-TIME – how much time to wait for a HELLO, before resetting adjacency. EIGRP packets are sourced from the primary address of each interface.
+* **UPDATE** packets are sent as unicast when neighbors are discovered initially and as multicasts whne updates are genertated by network changes. For each route, a packet contains the prefix, prefix length, hop count, and components of the advertised metric (Bandwidth, Load, Delay, Reliability, MTU). These packets are sent only when changes occur and only to the routers that need the update. EIGRP doesn’t use periodic updates. Update packets need to be acknowledged.
+* **QUERY** packets are used when “going active” – see [Going Active](more-eigrp-features.md#going-active-sending-queries). QUERY packets are sent as multicast and need to be ACKed.
+* **REPLY** packets are used to reply to QUERY packets. They are sent as unicasts and need to be ACKed.
+* **ACK** packets are sent as an acknowledgement to Query and Reply messages. ACK are always unicasts, and EIGRP expectes one ACK from each neighbor.
+* **GOODBYE** packets are sent when the EIGRP process is shut down or restarted to inform the neighbors.
 
 If there are many changes in the network, EIGRP messages can overwhelm a link. Use this command to limit the bandwidth used by EIGRP Updates per interface:
 
@@ -196,7 +197,7 @@ See [here](eigrp-101.md#eigrp-metric) for information about EIGRP metric and off
 
 ## EIGRP Administrative Distance
 
-By default, EIGRP AD is 90 for internal routes, 170 for external routes and 5 for summary routes. The default can be changed using:
+By default, EIGRP AD is **90** for internal routes, **170** for external routes and **5** for summary routes. The default can be changed using:
 
 ```
 R(config-router)# distance eigrp INTERNAL-AD EXTERNAL-AD

@@ -1,7 +1,7 @@
 # EIGRP Metric
 
 $$
-Metric_{EIGRP} =\begin{cases}[\frac{K_1B+K_2B}{256-L}+K3D)*{\frac{K_5}{R+K_4}}]*256 & K_5!=0\\ [\frac{K_1B+K_2B}{256-L}+K3D)]*256 & K_5=0\end{cases}
+Metric_{EIGRP} =\begin{cases}[(K_1B+\frac{K_2B}{256-L}+K3D)*{\frac{K_5}{R+K_4}}]*256 & K_5!=0\\ (K_1B+\frac{K_2B}{256-L}+K3D)*256 & K_5=0\\B+D & Default \end{cases}
 $$
 
 \
@@ -15,11 +15,11 @@ you will have to round down to the nearest integer
 ## Metric Components
 
 * **Bandwidth – B**
-  * inverse lowest bandwidth along the path in kbps, scaled by 10^7
-  * Interfaces with bandwidth higher than 10Gbps (10^7 kbps) are considered similar from EIGRP’s metric standpoint (B=1).
+  * inverse lowest bandwidth along the path in kbps, scaled by 10^7. The router receives the bandwidth "along the path" in advertisements from other routers. Therefore loweste bandwidth along the path will be the minimum value between the link's bandwidth and the advertised bandwidth.
+  * Interfaces with bandwidth higher than 10Gbps (10^7 kbps) are considered similar from EIGRP’s metric standpoint (B=1). See Wide-Metrics if you need Bandwidth to account for interfaces over 10Gbps.
 
 $$
-B = \frac{10^7}{\min_{path}(Bandwidth[kbps])}
+B = \frac{10^7}{\min_{path}(Bw[kbps])} = \frac{10^7}{\min(Bw_{Link}, Bw_{Advertised})}
 $$
 
 * **Load – L**
@@ -27,7 +27,7 @@ $$
   * Dynamically determined by the router. It has values starting from 1 (no usage) to 255(fully utilized)
 
 $$
-L = \max_{path}(Load)
+L = \max_{path}(Load) = \max(Load_{Link}, Load_{Advertised})
 $$
 
 * **Delay – D**
@@ -35,7 +35,7 @@ $$
   * EIGRP uses Delay to signal an unreachable route, by using the Delay value of 0xFFFFFF
 
 $$
-D = \sum_{path}(Delay[10 \mu s]
+D = \sum_{path}(Delay[10 \mu s]) = Delay_{Link}+Delay_{Advertised}
 $$
 
 * **Reliability – R**
@@ -43,7 +43,7 @@ $$
   * Dynamically determined by the router as the percentage of successfully received packets on the interface scaled by 255. The maximum value of 255 means 100% reliability.
 
 $$
-R=\min_{path} (Reliability)
+R=\min_{path} (Reliability) = \min(Relability_{Link}, Reliability_{Advertised})
 $$
 
 * **MTU**
@@ -51,7 +51,7 @@ $$
   * Largest MTU wins the tiebreak
 
 $$
-MTU = \min_{path}(MTU_{interface})
+MTU = \min_{path}(MTU_{interface})=\min(MTU_{Link}, MTU_{Advertised})
 $$
 
 * **Hop Count**
@@ -59,12 +59,12 @@ $$
   * There is a default limit of 100 to the number of hops to a destination, but this can be changed up to 255.
 
 $$
-Hop_{count}=\sum_{path}(Hops)
+Hop_{count}=\sum_{path}(Hops) = Hops_{Advertised} + 1
 $$
 
-When route information for a destination is received, it also contains the metric parameters used by the advertising router: Bandwidth, Delay, Load, Reliability, MTU. The receiving router compares the received information with the data it has for the incoming interface so it can find the lowest Bandwidth along the path, the highest Load along the path, the sum of Delays along the path, the lowest Reliability along the path and the lowest MTU along the path. Then, it can apply the formula to find the metric value for each path. The router that advertised the best path is considered the Successor, and the metric for that path is known as „Feasible Distance” (FD)
+When route information for a destination is received, it also contains the metric parameters used by the advertising router: Bandwidth, Delay, Load, Reliability, MTU. The receiving router compares the received information with the data it has for the incoming interface so it can find the lowest Bandwidth along the path, the highest Load along the path, the sum of Delays along the path, the lowest Reliability along the path and the lowest MTU along the path. Then, it can apply the formula to find the metric value for each path. The router that advertised the best path is considered the **Successor**, and the metric for that path is known as **„Feasible Distance” (FD)**
 
-For each destination, the router also applies the formula on the parameters it received from the advertising router to calculate the metric from that router towards the destination. This is known as the Advertised Distance (AD) or Reported Distance (RD).
+For each destination, the router also applies the formula on the parameters it received from the advertising router to calculate the metric from that router towards the destination. This is known as the **Advertised Distance (AD)** or **Reported Distance (RD).**
 
 Using the DUAL algortithm, EIGRP will consider all paths that have a RD\<FD as loop free backup paths and will call the routers advertising them Feasable Successors(FS) for the route. The FS will be kept in the topology table and when the route through the successor fails, the router will imediately use the best FS. For all other routes, DUAL will not consider them as backup paths, because they can be part of a routing loop (even if they aren’t actually). The idea is that if RD>FD, then that router is closer to the destination then us and it should route through us. If we use it as our next hop then it could send it back to us resulting in a routing loop.
 
@@ -140,12 +140,34 @@ All routes that have a hop-count greater than the maximum-hops, will not be adde
 
 ## Wide metric
 
-Newer IOS implementations support wide metrics, which can differentiate between interfaces higher than 10Gbps. Wide metric uses the following formula:\
-\[pmath size=12]K5!WideMetric\_EIGRP = \[(K1B+K2B/{256-L}+K3D+K6E)\*{K5/{R+K4}}]\*65535\[/pmath]
+Newer IOS implementations support wide metrics, which can differentiate between interfaces higher than 10Gbps. [EIGRP Wide Metric](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute\_eigrp/configuration/xe-3s/ire-xe-3s-book/ire-wid-met.html) uses the following formula:
 
 $$
-Metric_{EIGRP} =\begin{cases}[\frac{K_1T+K_2T}{256-L}+K3D+K_6E)*{\frac{K_5}{R+K_4}}]*256 & K_5!=0\\ [\frac{K_1T+K_2T}{256-L}+K3D+K_6E)]*256 & K_5=0\end{cases}
+WideMetric_{EIGRP} = (K_1B+\frac{K_2B}{256-L}+K_3D+K_6E)*\frac{K_5}{R+K_4}
 $$
 
-where T = Throughput and E = Extended Attributes. See [here](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute\_eigrp/configuration/xe-3s/ire-xe-3s-book/ire-wid-met.html) for details.\
-Supporting Wide metric, requires changes in the EIGRP packets to add the additional information. For this reason, a router will send packets for both standard metric and wide metric, so additional bandwidth will be used. If it detects that all neighbors on an interface support wide metrics, then it will only send this version.\
+
+
+$$
+Metric_{EIGRP} =\begin{cases}(K_1T+\frac{K_2T}{256-L}+K_3D+K_6E)*{\frac{K_5}{R+K_4}}& K_5!=0\\ K_1T+\frac{K_2T}{256-L}+K_3D+K_6E& K_5=0\\T+D & Default\end{cases}
+$$
+
+where&#x20;
+
+* T = Throughput = $$\frac{10^7}{Bandwidth}*65536$$
+* D = Latency = $$\begin{cases}\frac{Delay}{10}*65536 & if Bw < 1Gbps\\\frac{10^7*\frac{65536}{10}}{Bw} & if Bw >= 1Gbps\end{cases}$$
+* E = Extended Attributes.&#x20;
+
+
+
+See  for details. Supporting Wide metric, requires changes in the EIGRP packets to add the additional information. For this reason, a router will send packets for both standard metric and wide metric, so additional bandwidth will be used. If it detects that all neighbors on an interface support wide metrics, then it will only send this version.
+
+When the wide metrics are used, the metric can become larger than the maximum value allowed by the RIB so it needs to be scaled down using the command&#x20;
+
+```
+R(config-eigrp)# metric rib-scale
+```
+
+When it is cofigured, all EIGRP routes in the RIB are cleared and replaced with the new metric values.
+
+\

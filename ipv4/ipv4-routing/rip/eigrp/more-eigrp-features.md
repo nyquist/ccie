@@ -25,12 +25,12 @@ R# show ip eigrp topology
 ### Feasible Distance and the Successor
 
 A router uses the EIGRP formula to calculate the metric for each destination for all available paths.\
-For each destination, an EIGRP router calculates the metric based on information it has from the neighbors that advertise the destination and its incoming interfaces. See [EIGRP Metric](https://nyquist.eu/eigrp-metric/). The best metric for each destination is called the Feasible Distance. This indicates the best path to reach the destination, and the router that is the next hop in this path is called the **Successor**.
+For each destination, an EIGRP router calculates the metric based on information it has from the neighbors that advertise the destination and its incoming interfaces. See [EIGRP Metric](eigrp-metric.md). The best metric for each destination is called the **Feasible Distance**. This indicates the best path to reach the destination, and the router that is the next hop in this path is called the **Successor**.
 
 ### Reported Distance and Feasible Successors
 
 For each destination, an EIGRP router also calculates a Reported Distance (RD), aka Advertised Distance, for the neighbor advertising it. It is actually the metric to the destination seen from the point of view of the neighbor. This will be lower than the metric calculated by the router.\
-All routers that advertise a RD lower than the FD for each destination, are called Feasible Successors. These routers, are guaranteed to have a loop free path to the destination. EIGRP achieves quick conversion by immediately using one of the FS routes as the new Successor, in case the path via the Successor is down. All other paths cannot be guaranteed to be loop free and are not used in this step.
+All routers that advertise a RD lower than the FD for each destination, are called **Feasible Successors**. These routers, are guaranteed to have a loop free path to the destination. EIGRP achieves quick conversion by immediately using one of the FS routes as the new Successor, in case the path via the Successor is down. All other paths cannot be guaranteed to be loop free and are not used in this step.
 
 ### Going Active – Sending Queries
 

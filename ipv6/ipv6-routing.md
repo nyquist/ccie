@@ -79,8 +79,13 @@ If there are no IPv4 addresses on the router, it cannot create a Router ID and t
 R(config-rtr)# router-id IPV4-ADDRESS
 ```
 
-There is no auto-summary in EIGRP for IPv6.\
+There is no auto-summary in EIGRP for IPv6.
+
 EIGRP uses the link-local addresses to create adjacencies so you might need to set static mappings in Frame Relay.
+
+EIGRP for IPv6 uses FF02::A address for multicast messages.
+
+There are no network statements in EIGRP for IPv6, only interface statements
 
 ## OSPFv3 for IPv6
 
