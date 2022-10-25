@@ -282,7 +282,7 @@ Cost = \frac {BW_{reference}}{BW_{interface}}
 $$
 
 $$
-Cost_{default} = \frac{10^5}{BW_{interface}[kbps]} = \frac{10^8}{BW_{interface}[Kbps]}
+Cost_{default} = \frac{10^5}{BW_{interface}[kbps]} = \frac{10^8}{BW_{interface}[bps]}
 $$
 
 \
@@ -293,7 +293,7 @@ R(config-router)# auto-cost reference-bandwidth REFERENCE-BW
 ! REFERENCE-BW must be entered in Mbps. Default: 100
 ```
 
-The cost of a link cannot be less than 1 and will be narrowed down to the closes integer.\
+The cost of a link cannot be less than 1 and will be narrowed down to the closes integer. This means that any interface with a bandwidth higher than the reference bandwidth will have the same cost, which is 1.\
 The cost can be also manually assigned per interface:
 
 ```
