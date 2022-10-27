@@ -34,7 +34,7 @@ Normally, when bringing up a tunnel between 2 routers we create a loop because t
 
 ## The example
 
-![GRE Example Topology](../../.gitbook/assets/GRE.png)
+![GRE Example Topology](../../../.gitbook/assets/GRE.png)
 
 Each router will be configured with a loopback address. We will create a tunnel between R1 and R3 and we will use EIGRP for route distribution.\
 Here’s the starting configs that only include IP addressing information
@@ -238,4 +238,4 @@ It finally looks good.
 
 ## Conclusions on Recursive Routing
 
-You saw that EIGRP prevents recursice routing situations in small scenarios like this one by using a default metric that is worse through the tunnel than through the physical path. The same happens with OSPF as long as the physical path has a bandwidth higher than 9kbps (default for GRE tunnels). However with RIP, things won’t go as smoothly because it’s metric is based on hop count and the tunnel interface will always count as 1 hop, while the physical path will probably be more than that. So, pay attention when using RIP over GRE tunnels, as it will enter the recursive routing state by default.
+You saw that EIGRP prevents recursive routing situations in small scenarios like this one by using a default metric that is worse through the tunnel than through the physical path. The same happens with OSPF as long as the physical path has a bandwidth higher than 9kbps (default for GRE tunnels). However with RIP, things won’t go as smoothly because it’s metric is based on hop count and the tunnel interface will always count as 1 hop, while the physical path will probably be more than that. So, pay attention when using RIP over GRE tunnels, as it will enter the recursive routing state by default.

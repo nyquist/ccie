@@ -2,7 +2,7 @@
 
 [Backup Interfaces](backup-interfaces.md)
 
-[GRE Tunnels](gre-tunnels.md)
+[GRE Tunnels](tunnel-interfaces/gre-tunnels.md)
 
 [FHRP 101](fhrp-101.md)
 
@@ -14,7 +14,7 @@
 
 [IPv4 101](ipv4-101.md)
 
-[Tunnel Interfaces](tunnel-interfaces.md)
+[Tunnel Interfaces](tunnel-interfaces/)
 
 [BFD - Bidirectional Forwarding Detection](bfd-bidirectional-forwarding-detection.md)
 

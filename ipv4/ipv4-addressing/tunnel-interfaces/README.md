@@ -46,6 +46,20 @@ R(config-if)# tunnel mode ipv6
 
 The transported protocols can be IPv4 or IPv6, based on the type of address defined on the tunnel interface.
 
+### GRE (Generic Routing Encapsulation)
+
+GRE is defined as IP Protcol 47. It adds a 20 byte IP header and 4 byte GRE header to an existing packet so that it can be routed based on this new information.
+
+#### GRE Keepalives
+
+GRE supports sending and monitoring keepalives to determine the status of a tunnel interface.
+
+```
+R(config-if)# keepalive [PERIOD [RETRIES]]
+! Default PERIOD: 10 sec
+! Default RETRIES: 5
+```
+
 ## Path MTU Discovery
 
 Tunneling packets means an extra encapsulation header that is added to the packet which can make the packet too big on some links.\
@@ -59,16 +73,6 @@ R(config-if)# tunnel path-mtu-discovery [age-timer {TIME|infinte}| min-mtu SIZE]
 
 The discovery will run for a limited ammount of time unless the infinte keyword is used. Using SIZE, you can configure a minimum size of the discovered MTU that can be accepted. If the timer expires, the router will choose a MTU equal to the default interface MTU-20 Bytes for IP-in-IP or default interface MTU-24 Bytes for GRE.\
 Path MTU discovery is only available on GRE and IPIP tunnels.
-
-## GRE Keepalives
-
-GRE supports sending and monitoring keepalives to determine the status of a tunnel interface.
-
-```
-R(config-if)# keepalive [PERIOD [RETRIES]]
-! Default PERIOD: 10 sec
-! Default RETRIES: 5
-```
 
 ## VRF Support
 
