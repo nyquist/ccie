@@ -28,7 +28,8 @@ Timers are usually learned from the active router. Millisecond timers can only b
 
 ### Election process
 
-An election process takes place, where the primary router is elected. Only one device will be elected as the primary router. It will receive and forward packets destined for the Group IP. At the same time, a standby router is elected. It will monitor if the primary router is still reachable and if the active router fails, the standby router takes over and a new router is elected to be the standby router.\
+An election process takes place, where the primary router is elected. Only one device will be elected as the primary router. It will receive and forward packets destined for the Group IP. At the same time, a standby router is elected. It will monitor if the primary router is still reachable and if the active router fails, the standby router takes over and a new router is elected to be the standby router.
+
 The router with the highest priority will be elected as the primary router. The default priority or all routers is 100. In case of a tie, the router with the highest IP Address will becom the primary router.
 
 ```
@@ -62,12 +63,19 @@ HSRP can also track other objects using:
 HSRP authentication can use clear text or md5 hashes. For md5, you can use ca key-chain or a key-string:
 
 ```
-R(config)# standby GROUP authentication {text STRING | key-string STRING| key-chain CHAIN}
+R(config)# standby GROUP authentication {text STRING | md5 {key-string STRING| key-chain CHAIN}}
 ```
+
+With an MD5 key, a hash is computed on a portion of each message and it is sent along with the message. The receiving peer performs the same hash on the received message&#x20;
 
 ### Versions
 
-HSRPv1 sends multicast messages to 224.0.0.2, while HSRPv2 sends multicast messages to 224.0.0.102. HSRPv1 permits HSRP group numbers in the range 0-255, while HSRPv2 permits group numbers in the range 0-4095. HSRPv1 uses the virtual MAC format of 0000.0c07.acXX, where XX is the group number, while HSRPv2 uses the virtual MAC format of 0000.0C9F.FXXX – where XXX is the group number.
+|                             | HSRP v1                                     | HSRP v2                                     |
+| --------------------------- | ------------------------------------------- | ------------------------------------------- |
+| Sends multicast messages to | 224.0.0.2                                   | 224.0.0.102                                 |
+| Supported groups            | 0-255                                       | 0-4095                                      |
+| virtual MAC address         | <p>0000.0c07.acXX <br>XX = Group Number</p> | <p>0000.0C9F.FXXX<br>XXX = Group Number</p> |
+| Keepalive timers            | Doesn't support msec                        | Supports msec                               |
 
 ```
 R(config)# standby version {1|2}
@@ -104,13 +112,15 @@ R(config-if)# vrrp GROUP ip GROUP-IP [secondary]
 ! the GROUP-IP can be the interface IP
 ```
 
-VRRP advertisements are sent every second
+VRRP advertisements are sent to 224.0.0.18 with protocol number 112. By default they are sent every 1 second. Default holdtime is of 3 seconds
 
 ```
 R(config-if)# vrrp GROUP timers advertise [msec] INTERVAL
 ! The backup routers can learn the advertise interval from the Master Router:
 R(config-if)# vrrp GROUP timers learn
 ```
+
+Cisco devicese allow msec timers for VRRP although this is non-standard.
 
 VRRP can only track objects, not interfaces:
 
@@ -120,10 +130,14 @@ R(config-if)# vrrp GROUP track OBJECT [decrement DECREMENT]
 
 Also, VRRP is preemptive by default, which is different than HSRP.
 
+
+
 ## GLBP
 
-GLBP is a Cisco proprietary protocol. The advantage of GLBP is that it additionally provides load balancing over multiple routers (gateways) using a single virtual IP address and multiple virtual MAC addresses. The forwarding load is shared among all routers in a GLBP group rather than being handled by a single router while the other routers stand idle.\
-An AVG (Active Virtual Gateway) will be elected using the same mechanics as the HSRP primary or the VRRP master router. The difference is that AVG’s role is to maintain a list of maximum 4 AVF (Active Virtual Forwarder) and assignes a MAC address to them, in the format 0007.b4XX.XXYY (XXXX = GLBP Group, YY – VF Number). The AVG will reply to ARP requests with the MAC address assigned to the AVFs, thus achieving load balancing.\
+GLBP is a Cisco proprietary protocol. The advantage of GLBP is that it additionally provides load balancing over multiple routers (gateways) using a single virtual IP address and multiple virtual MAC addresses. The forwarding load is shared among all routers in a GLBP group rather than being handled by a single router while the other routers stand idle.
+
+An AVG (Active Virtual Gateway) will be elected using the same mechanics as the HSRP primary or the VRRP master router. The difference is that AVG’s role is to maintain a list of maximum 4 AVF (Active Virtual Forwarder) and assignes a MAC address to them, in the format 0007.b4XX.XXYY (XXXX = GLBP Group, YY – VF Number). The AVG will reply to ARP requests with the MAC address assigned to the AVFs, thus achieving load balancing.
+
 A router that is assigned a MAC address will be a primary AVF, while the other routers can take over the MAC address if the primary AVF fails.\
 Most GLBP configurations are similar to HSRP and VRRP
 
