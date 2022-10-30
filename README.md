@@ -114,8 +114,8 @@ coverY: 0
   * [DHCP Snooping and DAI](security/switch-security/dhcp-snooping-and-dai.md)
   * [802.1x](security/switch-security/802.1x.md)
   * [Switch ACLs](security/switch-security/switch-acls.md)
-* [IPSec VPN 101](security/ipsec-vpn-101.md)
-* [DMVPN 101](security/dmvpn-101.md)
+* [IPSec VPN 101](security/ipsec-vpn-101/)
+* [DMVPN 101](security/ipsec-vpn-101/dmvpn-101.md)
 
 ### Network Services
 
