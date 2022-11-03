@@ -38,6 +38,8 @@
 * [Wireless](layer-2-technologies/wireless/README.md)
   * [Wireless Principles](layer-2-technologies/wireless/wireless-principles.md)
   * [Wireless Implementations](layer-2-technologies/wireless/wireless-implementations.md)
+  * [Wireless Roaming](layer-2-technologies/wireless/wireless-roaming.md)
+  * [Wireless Authentication](layer-2-technologies/wireless/wireless-authentication.md)
 
 ## IPv4
 
