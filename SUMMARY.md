@@ -39,7 +39,9 @@
   * [Wireless Principles](layer-2-technologies/wireless/wireless-principles.md)
   * [Wireless Implementations](layer-2-technologies/wireless/wireless-implementations.md)
   * [Wireless Roaming](layer-2-technologies/wireless/wireless-roaming.md)
-  * [Wireless Authentication](layer-2-technologies/wireless/wireless-authentication.md)
+  * [Wireless Authentication](layer-2-technologies/wireless/wireless-authentication/README.md)
+    * [WPA2 PSK](layer-2-technologies/wireless/wireless-authentication/wpa2-psk.md)
+    * [WPA2 802.1X](layer-2-technologies/wireless/wireless-authentication/wpa2-802.1x.md)
 
 ## IPv4
 
