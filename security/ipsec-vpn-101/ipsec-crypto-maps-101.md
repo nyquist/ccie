@@ -36,8 +36,7 @@ R(config-crypto-map)# set peer PEER-IP
 R(config-crypto-map)# set transform-set TRANSFORM-SET
 ```
 
-When using IKE, you can also configure these settings:\
-Other setting specific to isakmp crypto maps, are:
+When using IKE, you can also configure these settings:
 
 ```
 R(config-crypto-map)# set security-association lifetime {seconds SEC| kilobytes KB}
