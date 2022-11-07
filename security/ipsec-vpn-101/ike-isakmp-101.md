@@ -1,11 +1,13 @@
-# IKE / ISAKMP
+# IKE / ISAKMP 101
 
 ## ISAKMP
 
 The ISAKMP framework is a collection of methods used to manage the establishment of SAs and the keys involved in the process. IKE is a protocol that implements the ISAKMP framework.\
 ISAKMP requires and IKE implements a 2 phase process for establishing an IPSec SA. In the 1st phase, an ISAKMP SA is established. The ISAKMP SA is then used to protect the negotiations for the IPSec SA in the 2nd phase.
 
-The ISAKMP policy should include:
+There are 2 version of IKE: [IKEv1](https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/217432-understand-ipsec-ikev1-protocol.html) (RFC2409) and [IKEv2](https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/115936-understanding-ikev2-packet-exch-debug.html)(RFC 4306).&#x20;
+
+The ISAKMP policy includes:
 
 * An authentication method to ensure the identity of the peers
 * An encryption method to protect the data and ensure privacy
@@ -13,13 +15,13 @@ The ISAKMP policy should include:
 * A DH group (Diffie-Hellman) to determine the strenght of the encryption-key-algorithm. This algorithm is then used to derive the encryption and hash keys
 * A session lifetime of the encryption key before it needs to be replaced.
 
-When implementing ISAKMP Phase 1, IKE can use either Main Mode or Aggressive Mode. When implementing ISAKMP Phase 2, IKE uses Quick Mode.
+ISAKMP separates the negotiation in 2 phases:
 
-1. ISAKMP Phase 1
-   * **IKE Main Mode**: Uses a minimum of 6 messages before the SA is established. Also provides identity protection.
-   * **IKE Aggressive Mode**: Uses a minimum of 3 messages before the SA is established. Does not provide identity protection.
-2. ISAKMP Phase 2
-   * **IKE Quick Mode**: Similar to IKE Aggressive Mode, but protected by the ISAKMP SA negotiated in Phase 1
+* Phase 1: The two peers establish a secure and authenticated tunnel. This tunnel is known as ISAKMAP SA. In this phase the tunnel protects the Control Plan between the peers. This communication runs on UDP 500 and UDP 4500. For IKEv2 there are 4 messages exchanged. For IKE v1 Phase 1 can run in two modes:
+  * **IKE Main Mode**: Uses a minimum of 6 messages before the SA is established. Also provides identity protection.
+  * **IKE Aggressive Mode**: Uses a minimum of 3 messages before the SA is established. Does not provide identity protection.
+* Phase 2: In this pahse the peers negotiate key materials and algorithms for the encryption (SAs) of the data to be transfered over the IPSec tunnel. In this phase the tunnel protects the Data Plane and ESP is used to encapsulate and encrypt the traffic. This phase is also called Quick Mode
+  * **IKE Quick Mode**: Similar to IKE Aggressive Mode, but protected by the ISAKMP SA negotiated in Phase 1
 
 ## Configuring ISAKMP Phase 1
 
