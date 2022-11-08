@@ -17,7 +17,7 @@ With Personal mode, WPA uses a pre-shared key (PSK) that needs to be statically 
 
 ### WPA2 Enterprise mode (802.1X)
 
-With Enterprise mode, 802.1X and EAP are used for authentication so each user or device is individually authenticated
+With Enterprise mode, [802.1X](wpa2-802.1x.md) and [EAP](../../../security/eap-101.md) are used for authentication so each user or device is individually authenticated
 
 ### WebAuth
 

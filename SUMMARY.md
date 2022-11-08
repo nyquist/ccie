@@ -125,6 +125,7 @@
   * [IPSEC Crypto Maps 101](security/ipsec-vpn-101/ipsec-crypto-maps-101.md)
   * [IPSEC VTI 101](security/ipsec-vpn-101/ipsec-vti-101.md)
   * [DMVPN 101](security/ipsec-vpn-101/dmvpn-101.md)
+* [EAP 101](security/eap-101.md)
 
 ## Network Services
 
