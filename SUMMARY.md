@@ -165,6 +165,8 @@
 * [Cisco CLI Tips and Tricks](network-optimization/cisco-cli-tips-and-tricks.md)
 * [AutoInstall](network-optimization/autoinstall.md)
 * [Enhanced Object Tracking](network-optimization/enhanced-object-tracking.md)
+* [Troubleshooting 101](network-optimization/troubleshooting-101.md)
+* [SPAN, RSPAN, ERSPAN](network-optimization/span-rspan-erspan.md)
 
 ## Network Architecture
 

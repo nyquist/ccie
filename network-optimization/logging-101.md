@@ -14,12 +14,11 @@ Without this command only the console will receive logs.
 
 ```
 R(config)# logging buffered [SIZE]
-! Logs messages to an internal memory buffer.
+! Logs messages to an internal buffer.
 R(config)# logging HOST-IP [LEVEL]
 ! Logs messages to a syslog server host.
 R(config)# logging trap LEVEL
 ! Must be enabled in order to log messages to Syslog Host
-R(config)# logging persistent
 R(config)# logging file FILENAME [MAX-SIZE [MIN-SIZE]] [LEVEL]
 ! Logs messages to a file
 R(config)# logging console
