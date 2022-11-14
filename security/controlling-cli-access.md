@@ -34,7 +34,7 @@ R(config)# enable {password PASS | secret SECRET}
 
 ### Custom Privilege Levels
 
-These commands are not compatible with [AAA ](https://nyquist.eu/aaa-101/)mode of operation.\
+These commands are not compatible with [AAA](aaa-101.md) mode of operation.\
 By default, there are only 3 privilege levels:
 
 * Level 0 = no rights
@@ -55,7 +55,7 @@ R(config)# privilege COMMAND [all] level LEVEL STRING
 
 ### Role Based CLI Access
 
-This feature is similar to the Custom Privilege levels, but it requires [aaa new-model](https://nyquist.eu/aaa-101)\
+This feature is similar to the Custom Privilege levels, but it requires [aaa new-model](aaa-101.md)\
 With this feature you can create custome views with different access to the CLI commands.\
 First you need to be in the root view in order to create other views. To move to the root view, use:
 

@@ -10,12 +10,6 @@ R(config)# control-plane
 R(config-cp)# service-policy {input|output} POLICY-MAP
 ```
 
-To monitor Control Plan Policing use:
-
-```
-R# show policy-map control-plane
-```
-
 ## CoPPr – Control Plane Protection
 
 Control Plane Protection is similar to the policing feature, except it offers a more granular access to the control plane functions.\
@@ -80,7 +74,7 @@ Then, apply it on the host subinterface:
 R(config-pmap-host)# service-policy type queue-threshold input QUEUE-TH-POLICY
 ```
 
-### Management Interfaces
+### Managenet Interfaces
 
 Additionally, on the host subinterface, you can define what management protocols are allowed on each physical interface:
 
