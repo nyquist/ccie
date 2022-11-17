@@ -57,7 +57,7 @@ VXLAN was preferred over LISP encapsulation because it also supports the encapsu
 
 The VXLAN Encapsulation takes the original L2 frame (Original Ethernet Header + Original IP Header + Data) and adds a VXLAN Header which is then encapsulated inside UDP>IP>Ethernet (Outer Ethernet Header + Outer VXLAN IP Header + Outer VXLAN UDP Header)
 
-<figure><img src="../.gitbook/assets/vxlan_header.drawio.png" alt=""><figcaption><p>VXLAN Encapsulation</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/vxlan_header.png" alt=""><figcaption><p>VXLAN Encapsulation</p></figcaption></figure>
 
 | Field          | Description                                                                     |
 | -------------- | ------------------------------------------------------------------------------- |
@@ -66,11 +66,7 @@ The VXLAN Encapsulation takes the original L2 frame (Original Ethernet Header + 
 | VNI            | identifies the individual VXLAN Overlay network where the communication belongs |
 | Reserved       | Set to 0                                                                        |
 
-
-
 Cisco also supports a modified VXLAN-GPO (Group Policy Option) header that supports TrustSec Scalable Group Tags (SGTs)
-
-
 
 | Field                                |                                                                                                                                                                                                                                                                                                                           |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -89,29 +85,103 @@ The policy plane is based on Cisco TrustSec. With Cisco TrustSec, SGTs are assig
 
 #### SD Access Fabric Roles
 
-{% tabs %}
-{% tab title="Control plane node" %}
-This node provides the EID-to-RLOC (Endpoint to Location) mapping
-{% endtab %}
+<details>
 
-{% tab title="Fabric border node" %}
-This node connects other L3 networks to the fabric
-{% endtab %}
+<summary>Fabric Control Plane node</summary>
 
-{% tab title="Fabric Edge node" %}
-This node connects wired endpoints to the fabric. The edge node provides
-{% endtab %}
+This node provides the EID-to-RLOC (Endpoint to Location) mapping so it is the LISP MS/MR (Map Server / Map Resolver)
 
-{% tab title="Fabric WLC" %}
-This node connects APs and wireless endpoints to the fabric
-{% endtab %}
+The control plane receives registrations from Fabric Edge and Fabric Border nodes for known EID prefixes from wired or wireless endpoints.
 
-{% tab title="Intermediate nodes" %}
+It also replies to lookups from these nodes to locate destination EIDs
 
+</details>
+
+<details>
+
+<summary>Fabric Border node</summary>
+
+This node connects other L3 networks to the fabric. These nodes are LISP Proxy tunnel routers (PxTR)
+
+There are 3 types of Fabric Border nodes:
+
+* Internal Border: connects to known areas of the organization (for example firewall, data center)
+* Default Border: connects to unknown areas outside of organization (e.g.: the Internet or public cloud). It is configred with a default route to reach these external unknown networks.
+* Internal + Default Border: a combination of Internal and Default Border
+
+</details>
+
+<details>
+
+<summary>Fabric Edge node</summary>
+
+This node connects wired endpoints to the fabric. The edge node identifies and authenticates connected endpoints (through 802.1x). It then places them in a host pool (SVI and VRF) and assigns them to an SGT. Then it registere's the host's EID (L2 MAC, L4 IPv4 or L4 IPv6) with the control plane node.
+
+The Fabric Edgen node provides a single L3 anycast gateway (same SVI with the same IP Address on all edge nodes).
+
+This is also where the encapsulation/decapsulation of host traffic happens.
+
+</details>
+
+<details>
+
+<summary>Fabric WLC</summary>
+
+This node connects APs and wireless endpoints to the fabric. The WLC is external to the fabric and connects to the SD-Access through a Border Node. A fabric WLC also performs PxTR (Proxy Tunnel Routers) registration to the fabric control plane on behalf of the Fabric Edge
+
+Traditionally the wireless traffic is encapsulated into CAPWAP to the WLC before it gets to the wired network. In SD-Access the data si distributed using VXLAN from fabric-enabled APs. A CAPWAP tunnel is still established and encapsualted into VXLAN for the control plane between AP and WLC.
+
+</details>
+
+<details>
+
+<summary>Intermediate nodes</summary>
 
 These nodes are used to connect the other nodes and only provide underlay services
+
+</details>
+
+#### SD Access Fabric Concepts
+
+{% tabs %}
+{% tab title="VN (Virtual Network)" %}
+The VN provides the virtualization by using VRFs to create multiple L3 routing tables. In the control plane LISP instace IDs are used to maintain separate VRFs and in the data plane edge nodes add a VNI to the fabric encapsulation
+{% endtab %}
+
+{% tab title="Host Pool" %}
+A host pool is a group of endpoints assigned to an IP pool subnet. Fabric Edgen nodes have an SVI for each host pool that will act as the default gateway for the hots.
+
+Host pools can be assigned dynamically (using host authentication - 802.1x) or statically (per port).
+
+The SD-Access fabric uses EID mappings to advertise each host pool. This allows host-specific (/32 IPv4, /64 IPv6 or MAC) advertisements and mobility.
+{% endtab %}
+
+{% tab title="Scalable Group" %}
+A scalable group is a group of endpoints with similar policies. The SD-Access policy plane will assign each host to an SG using TrustSec SGT tags.
+
+SG assignments can be static (per-port) or dynamic via 802.1x authentication
+
+The SGT tags are added by the Fabric Edge or Fabric Border nodes ot the VXLAN header.
+{% endtab %}
+
+{% tab title="Anycast Gateway" %}
+The anycast gateway provides a L3 default gateway where in such a way that the same SVI is provisioned on _every_ edge node withe the same SVI IP and MAC address. This allows for endpoint mobility which means an endpoint could connect to any edge node and still maintain it's reachability to the anycast gateway and to the memebers of the VN.
 {% endtab %}
 {% endtabs %}
 
-****
+## SD Access Controller Layer
 
+The controller layer provides the management functions which are performed by Cisco DNA Center and Cisco ISE but it covers 3 subsystems:
+
+* **Cisco NCP (Network Control Platform)** - integrated into Cisco DNA Center and provides the underlay and overlay automation and orchestration services
+* **Cisco NDP (Network Data Platform)** - integrated into Cisco DNA Center and provies the data collection and analytics function as well as network assurance. It will provide the operational status of the network to the management layer
+* **Cisco ISE (Identity Services Engine)** - provides NAC (Network Access Control) and identity services for dynamic endpoint-to-group mapping and policy definition. As part of the authentication process, ISE also provides the host pools and SG for the endpoints.
+
+## SD Access Management Layer
+
+The management layer provides the UI layer where information from all other layers are presented to the network operators. This layer abstracts a lot of the complex work performed by the other layers so it will provide a simplified view for operators who don't need to understand all complexities of the network. This layer is provided via Cisco DNA Center and tasks are implemented through a few workflows following the Intent-based networking paradigm:
+
+* Cisco DNA Design Workflow
+* Cisco DNA Policy Workflow
+* Cisco DNA Provision Workflow
+* Cisco DNA Assurance Workflow
